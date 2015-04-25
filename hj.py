@@ -75,13 +75,13 @@ class RFModel(Orange.classification.base.Model):
             learner.min_instances, learner.max_depth,
             learner.max_majority, learner.skip_prob, True)
 
-        parallelizer = joblib.Parallel(n_jobs=-1, max_nbytes=1e3,
+        parallelizer = joblib.Parallel(n_jobs=-1, max_nbytes=1e1,
                                        verbose=0, backend="multiprocessing")
 
+        print("X", learner.n_estimators)
         tasks = (joblib.delayed(self.s_tree)(tree, learner.seed + i, data)
                  for i in range(learner.n_estimators))
         self.estimators_ = parallelizer(tasks)
-
 
     def predict_storage(self, data):
         if self.type == 'classification':
@@ -100,16 +100,18 @@ class RFModel(Orange.classification.base.Model):
             assert(False)
 
 data = Orange.data.Table("adult")
-rf = RFLearner()
-srf = Orange.classification.RandomForestLearner()
+
+n = 100
+rf = RFLearner(n_estimators=n)
+srf = Orange.classification.RandomForestLearner(n_estimators=n)
 
 t = time.time()
-res = Orange.evaluation.CrossValidation(data, [srf])
+res = Orange.evaluation.CrossValidation(data, [rf, srf])
 print("%3.1fs" % (time.time()-t))
 print(Orange.evaluation.AUC(res))
 print()
 
-t = time.time()
-res = Orange.evaluation.CrossValidation(data, [rf])
-print("%3.1fs" % (time.time()-t))
-print(Orange.evaluation.AUC(res))
+# t = time.time()
+# res = Orange.evaluation.CrossValidation(data, [rf])
+# print("%3.1fs" % (time.time()-t))
+# print(Orange.evaluation.AUC(res))
