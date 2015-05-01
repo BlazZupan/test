@@ -69,4 +69,41 @@ def min_max(p):
 
 
 def log_loss(ps, actual):
-    return np.array(np.sum(np.log(min_max(ps[np.arange(ps.shape[0]), actual.astype(np.int)])))) / (-len(actual))
+    return np.array(np.sum(np.log(min_max(ps[np.arange(ps.shape[0]),
+                                             actual.astype(np.int)])))) \
+           / (-len(actual))
+
+
+class RandomizedLearner(Orange.classification.Learner):
+    """Ensamble learning through randomization of data domain."""
+    def __init__(self, learner, k=3, p=0.1):
+        super().__init__()
+        self.k = k
+        self.learner = learner
+        self.name = "rand " + self.learner.name
+        # a function to be used for random attribute subset selection
+        self.selector = Orange.preprocess.fss.SelectRandomFeatures(k=p)
+
+    def fit_storage(self, data):
+        """Returns a bagged model with randomized regressors."""
+        models = []
+        for epoch in range(self.k):
+            sample = self.selector(data)  # data with a subset of attributes
+            models.append(self.learner(sample))
+        model = BaggedModel(data.domain, models)
+        model.name = self.name
+        return model
+
+
+class BaggedModel(Orange.classification.Model):
+    """Bootstrap aggregating classifier."""
+    def __init__(self, domain, models):
+        super().__init__(domain)
+        self.models = models  # a list of predictors
+
+    def predict_storage(self, data, ret=Orange.classification.Model.Value):
+        """Given data instances returns predicted probabilities."""
+        y_hats = np.array([m(data, 1) for m in self.models]).mean(axis=0)
+        print(y_hats)
+        print(len(data))
+        return y_hats

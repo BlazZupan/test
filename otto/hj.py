@@ -1,19 +1,19 @@
 import Orange
-import Orange.classification
+import Orange.evaluation
 import otto
+from importlib import reload
+reload(otto)
+
+data = Orange.data.Table("voting")
 
 lr = Orange.classification.LogisticRegressionLearner(C=0.5)
 lr.name = "logreg.05"
 
-rf = Orange.classification.SimpleRandomForestLearner(n_estimators=100)
-rf.name = "srf-100"
+rlr = otto.RandomizedLearner(lr, p=0.3)
+rlr.name = "rand.logreg.05.03"
 
-o = otto.Otto("5k")
-# o.dump_cv(rf)
-o.dump_cv(lr)
-o.report_evaluation()
+model = rlr(data)
+x = model(data)
 
-
-#
-# z = log_loss(ps, data.Y)
-# print(z)
+res = Orange.evaluation.CrossValidation(data, [lr, rlr], k=5)
+x = Orange.evaluation.AUC(res)
