@@ -1,15 +1,16 @@
 import Orange
 import Orange.classification
+import otto
 
 lr = Orange.classification.LogisticRegressionLearner(C=1)
 lr.name = "logreg.1"
 
-rf = Orange.classification.SimpleRandomForestLearner(n_estimators=100)
-rf.name = "srf-100"
+rf = Orange.classification.SimpleRandomForestLearner(n_estimators=1000)
+rf.name = "srf-1000"
 
-otto = Otto("5k")
-otto.dump_cv(rf)
-otto.report_evaluation()
+o = otto.Otto("5k")
+o.dump_cv(rf)
+o.report_evaluation()
 
 # x = otto.dump_cv(lr)
 # res = otto.test_on_test()
