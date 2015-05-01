@@ -104,6 +104,4 @@ class BaggedModel(Orange.classification.Model):
     def predict_storage(self, data, ret=Orange.classification.Model.Value):
         """Given data instances returns predicted probabilities."""
         y_hats = np.array([m(data, 1) for m in self.models]).mean(axis=0)
-        print(y_hats)
-        print(len(data))
         return y_hats

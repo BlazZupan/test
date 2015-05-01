@@ -14,9 +14,13 @@ rlr.name = "rand.logreg.05"
 rlr = otto.RandomizedLearner(lr, k=50, p=0.5)
 rlr.name = "rand.logreg.05.05.50"
 
+svm = Orange.classification.SVMLearner(C=1.0)
+svm.name = "svm.1"
+
+
 o = otto.Otto("5k")
 # o.dump_cv(rf)
-o.dump_cv(rlr)
+o.dump_cv(svm)
 o.report_evaluation()
 
 
