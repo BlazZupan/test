@@ -11,8 +11,8 @@ rf.name = "srf-100"
 rlr = otto.RandomizedLearner(lr)
 rlr.name = "rand.logreg.05"
 
-rlr = otto.RandomizedLearner(lr, p=0.3)
-rlr.name = "rand.logreg.05.03"
+rlr = otto.RandomizedLearner(lr, k=50, p=0.5)
+rlr.name = "rand.logreg.05.05.50"
 
 o = otto.Otto("5k")
 # o.dump_cv(rf)
