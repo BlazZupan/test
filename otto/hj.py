@@ -5,8 +5,8 @@ import otto
 lr = Orange.classification.LogisticRegressionLearner(C=1)
 lr.name = "logreg.1"
 
-rf = Orange.classification.SimpleRandomForestLearner(n_estimators=10)
-rf.name = "srf-10"
+rf = Orange.classification.SimpleRandomForestLearner(n_estimators=100)
+rf.name = "srf-100"
 
 o = otto.Otto("5k")
 o.dump_cv(rf)
