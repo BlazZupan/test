@@ -11,8 +11,6 @@ from joblib import Parallel, delayed
 
 class Otto:
     def __init__(self, name):
-        # self.data = Orange.data.Table("data/%s-train.tab" % name)
-        # self.test = Orange.data.Table("data/%s-train.tab" % name)
         self.name = name
         self.data, self.test = pickle.load(open("data/%s.pkl" % name, "rb"))
         if os.path.exists("data/%s-indices.pkl" % name):
@@ -21,7 +19,7 @@ class Otto:
             self.ind = self.create_cv_indices()
             pickle.dump(self.ind, open("data/%s-indices.pkl" % name, "wb"))
 
-    def create_cv_indices(self, k=5):
+    def create_cv_indices(self, k=10):
         y = self.data.Y.copy().flatten()
         indices = skl_cross_validation.StratifiedKFold(
             y, k, shuffle=True
@@ -35,8 +33,7 @@ class Otto:
         return model(test, 1)
 
     def dump_cv(self, learner, n_jobs=-1):
-        ps = None
-        parallelizer = Parallel(n_jobs=n_jobs, max_nbytes=1e8,
+        parallelizer = Parallel(n_jobs=n_jobs, max_nbytes=1e15,
                                 backend="multiprocessing")
 
         tasks = (delayed(self.cv)(learner, a, b) for a, b in self.ind)
