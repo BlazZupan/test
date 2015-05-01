@@ -17,10 +17,13 @@ rlr.name = "rand.logreg.05.05.50"
 svm = Orange.classification.SVMLearner(C=1.0)
 svm.name = "svm.1"
 
+knn = Orange.classification.KNNLearner(n_neighbors=11, weights="distance")
+knn.name = "knn.11.dist"
+
 
 o = otto.Otto("5k")
 # o.dump_cv(rf)
-o.dump_cv(svm)
+o.dump_cv(knn)
 o.report_evaluation()
 
 
