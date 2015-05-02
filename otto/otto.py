@@ -1,6 +1,5 @@
 import Orange
 import Orange.classification
-import os.path
 import pickle
 import sklearn.cross_validation as skl_cross_validation
 import numpy as np
@@ -34,7 +33,7 @@ class Otto:
 
     def dump_cv(self, learner, n_jobs=-1):
         parallelizer = Parallel(n_jobs=n_jobs, max_nbytes=1e15,
-                                backend="multiprocessing")
+                                backend="threading", verbose=20)
 
         tasks = (delayed(self.cv)(learner, a, b) for a, b in self.ind)
         entries = parallelizer(tasks)
