@@ -22,7 +22,12 @@ svm.name = "svm.1"
 knn = Orange.classification.KNNLearner(n_neighbors=11, weights="distance")
 knn.name = "knn.11.dist"
 
-learners = {"lr": lr, "rf": rf, "rlr": rlr, "svm": svm, "knn": knn}
+rknn = otto.RandomizedLearner(knn, k=50, p=0.5)
+rknn.name = "rand.knn.11.dist"
+
+
+learners = {"lr": lr, "rf": rf, "rlr": rlr, "svm": svm, "knn": knn,
+            "rknn": rknn}
 
 d_name, l_name = sys.argv[1:3]
 if not os.path.exists("data/{}.pkl".format(d_name)):
