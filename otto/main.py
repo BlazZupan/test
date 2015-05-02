@@ -49,7 +49,7 @@ if len(sys.argv) == 2:
     o = otto.Otto(d_name)
     o.report_evaluation()
 else:
-    l_name = sys.argv[1:3]
+    d_name, l_name = sys.argv[1:3]
     if not os.path.exists("data/{}.pkl".format(d_name)):
         print("Error: data/{}.pkl does not exist".format(d_name))
         sys.exit(0)
