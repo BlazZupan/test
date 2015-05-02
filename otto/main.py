@@ -19,8 +19,8 @@ rlr.name = "rand.logreg.05.05.50"
 svm = Orange.classification.SVMLearner(C=1.0)
 svm.name = "svm.1"
 
-knn = Orange.classification.KNNLearner(n_neighbors=11, weights="distance")
-knn.name = "knn.11.dist"
+knn = Orange.classification.KNNLearner(n_neighbors=100, weights="distance")
+knn.name = "knn.100.dist"
 
 rknn = otto.RandomizedLearner(knn, k=50, p=0.5)
 rknn.name = "rand.knn.11.dist"
