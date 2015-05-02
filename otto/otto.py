@@ -58,10 +58,12 @@ class Otto:
     def report_evaluation(self):
         files = [name[:-4] for name in os.listdir("res")
                  if name[-4:] == ".pkl" and self.name in name]
-        for name in files:
-            print("%-30s %6.4f %6.4f" % (name,
-                                        self.test_on_cv(name),
-                                        self.test_on_test(name)))
+
+        res = [(self.test_on_cv(name), self.test_on_test(name), name)
+               for name in files]
+        res.sort()
+        for cv, tst, name in res:
+            print("%-30s %6.4f %6.4f" % (name, cv, tst))
 
 
 def min_max(p):
