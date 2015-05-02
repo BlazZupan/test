@@ -1,6 +1,7 @@
 import Orange
 import Orange.classification
 import pickle
+import sklearn
 import sklearn.cross_validation as skl_cross_validation
 import numpy as np
 import os
@@ -104,3 +105,19 @@ class BaggedModel(Orange.classification.Model):
         """Given data instances returns predicted probabilities."""
         y_hats = np.array([m(data, 1) for m in self.models]).mean(axis=0)
         return y_hats
+
+
+class GradientBoostingLearner(Orange.classification.SklLearner):
+    __wraps__ = sklearn.ensemble.GradientBoostingClassifier
+    name = 'gbc'
+
+    def __init__(self, loss='deviance', learning_rate=0.1, n_estimators=100,
+                 subsample=1.0, min_samples_split=2, min_samples_leaf=1,
+                 min_weight_fraction_leaf=0.0, max_depth=3, init=None,
+                 random_state=None, max_features=None, verbose=0,
+                 max_leaf_nodes=None, warm_start=False,
+                 preprocessors=None):
+        super().__init__(preprocessors=preprocessors)
+        self.params = vars()
+        self.supports_multiclass = True
+
