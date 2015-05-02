@@ -22,8 +22,11 @@ svm.name = "svm.1"
 knn = Orange.classification.KNNLearner(n_neighbors=100, weights="distance")
 knn.name = "knn.100.dist"
 
-rknn = otto.RandomizedLearner(knn, k=50, p=0.5)
-rknn.name = "rand.knn.11.dist"
+rknn = otto.RandomizedLearner(knn, k=10, p=0.3)
+rknn.name = "rand.knn.100.03.dist"
+
+gbl = otto.GradientBoostingLearner(n_estimators=200)
+gbl.name = "gbl.200"
 
 
 learners = {"lr": lr, "rf": rf, "rlr": rlr, "svm": svm, "knn": knn,

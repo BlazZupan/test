@@ -16,8 +16,12 @@ rlr.name = "rand.logreg.05.03"
 svm = Orange.classification.SVMLearner(C=1.0)
 svm.name = "svm.1"
 
+gbl = otto.GradientBoostingLearner(n_estimators=200)
+gbl.name = "gbl"
+
 model = rlr(data)
 x = model(data)
 
-res = Orange.evaluation.CrossValidation(data, [lr, svm], k=5)
+res = Orange.evaluation.CrossValidation(data, [lr, gbl], k=5)
 x = Orange.evaluation.AUC(res)
+print(x)
