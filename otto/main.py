@@ -30,7 +30,7 @@ gbl.name = "gbl.200"
 
 
 learners = {"lr": lr, "rf": rf, "rlr": rlr, "svm": svm, "knn": knn,
-            "rknn": rknn}
+            "rknn": rknn, "gbl": gbl}
 
 d_name, l_name = sys.argv[1:3]
 if not os.path.exists("data/{}.pkl".format(d_name)):
